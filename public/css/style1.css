@@ -1,0 +1,158 @@
+hr {
+    width: 100%;
+}
+
+h1 {
+    margin-left: 2em;
+    margin-top: 0;
+}
+
+#sidebar-icon {
+    font-size: 30px;
+    cursor: pointer;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+}
+
+.heading {
+    height: 10%;
+    width: 100%;
+    position: relative;
+}
+
+#content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 90%;
+    max-width: 1200px;
+    margin-right: auto;
+    margin-left: auto;
+    height: 1000px;
+    text-overflow: ellipsis;
+}
+
+.news-row {
+    color: black;
+    height: auto;
+    min-height: 220px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    padding: 2em;
+    text-decoration: none;    
+}
+
+.news-row:hover {
+    color: #8B78E6;
+}
+
+.image-col-1 {
+    width: 30%;
+}
+
+.categorical-news-image-col-1-url-image {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+.title-col-2 {
+    height: auto;
+    width: 30%;
+    font-size: 1.5rem;
+    margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.description-col-3 {
+    height: auto;
+    width: 30%;
+    font-family: 'Lateef', cursive;
+    font-size: 1.5rem;
+    margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+
+
+
+
+
+
+
+
+form {
+    display: flex;
+    flex-direction: row;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+
+#search-box {
+    margin-left: 2%;
+    font-size: 1rem;
+    border-radius: 8px;
+}
+
+#search-button {
+    text-align: center;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: 5%;
+    background-color: #9999ff;
+    font-size: 1rem;
+    border-radius: 5px;
+    padding: 0.4em;
+    color: white;
+    cursor: pointer;
+    border: none;
+}
+
+#sidebar {
+    top: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    overflow-x: hidden;
+    height: 100%;
+    width: 0;
+    position: fixed;
+    background-color: #2C3335;
+    transition: 0.2s;
+}
+
+#nav-links {
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-text {
+    text-decoration: none;
+    font-family: 'Oswald', sans-serif;
+    color: #f1f1f5;
+    transition: 0.3s;
+    padding: 1em;
+    font-size: 1.5rem;
+}
+
+.sidebar-text:hover {
+    color: #6c6c77;
+}
+
+.close-btn {
+    height: 50px;
+    width: 50px;
+    margin-left: 85%;
+}
+
+.close-btn:hover {
+    cursor: pointer;
+}
