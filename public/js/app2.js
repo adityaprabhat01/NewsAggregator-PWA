@@ -1,8 +1,8 @@
 function loadNews() {
 
     const cat = location.href.split('/')[3]
-
-    fetch('http://localhost:3001/category?category=' + cat).then((response) => {
+    //http://localhost:3001
+    fetch('/category?category=' + cat).then((response) => {
         response.json().then((data) => {
             console.log(data)
             

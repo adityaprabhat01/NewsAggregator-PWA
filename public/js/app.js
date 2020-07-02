@@ -2,7 +2,8 @@ console.log('script loaded')
 const categories = ['business', 'entertainment', 'health', 'science', 'sports', 'technology']
 
 async function loadHeadlines() {
-    await fetch('http://localhost:3001/topHeadlines').then((response) => {
+    //http://localhost:3001
+    await fetch('/topHeadlines').then((response) => {
         response.json().then((data) => {
             const newsImageCol1 = document.getElementsByClassName('news-image-col-1-url-image')
             const newsContentCol1 = document.getElementsByClassName('news-content-col-1')
@@ -53,7 +54,7 @@ async function loadHeadlines() {
 async function loadCategories  () {
     for (category of categories) {
         const fetchCategory = category
-        await fetch('http://localhost:3001/category?category=' + fetchCategory).then((response) => {
+        await fetch('/category?category=' + fetchCategory).then((response) => {
             response.json().then((data) => {
                 
                 cat = document.getElementById(fetchCategory)

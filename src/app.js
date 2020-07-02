@@ -3,8 +3,8 @@ const express = require('express')
 const category = require('./backend/category')
 const topHeadlines = require('./backend/topHeadlines')
 
-const port = 3001
 const app = express()
+const port = process.env.PORT || 3001
 
 //views
 app.set('view engine', 'hbs')
