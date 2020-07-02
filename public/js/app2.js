@@ -30,7 +30,7 @@ function loadNews() {
                     titleCol2.setAttribute("class", "title-col-2")
                     titleCol2.innerHTML = data.title[i]
 
-                    var desriptionCol3 = document.createElement("p")
+                    var desriptionCol3 = document.createElement("span")
                     desriptionCol3.setAttribute("class", "description-col-3")
                     desriptionCol3.innerHTML = data.description[i]
 

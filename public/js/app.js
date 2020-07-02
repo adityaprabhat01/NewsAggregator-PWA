@@ -54,7 +54,7 @@ async function loadHeadlines() {
 async function loadCategories  () {
     for (category of categories) {
         const fetchCategory = category
-        await fetch('/category?category=' + fetchCategory).then((response) => {
+        await fetch('http://localhost:3001/category?category=' + fetchCategory).then((response) => {
             response.json().then((data) => {
                 
                 cat = document.getElementById(fetchCategory)
