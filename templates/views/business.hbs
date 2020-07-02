@@ -12,8 +12,9 @@
             <hr>
             <span id="sidebar-icon" onclick="openNav()">&#9776;</span>
             <div id="sidebar">
-            
-                <img src="/img/close.png" onclick="closeNav()" href="javascript:void(0)" class="close-btn">
+                <div class="close-button-parent">
+                    <img src="/img/close.png" onclick="closeNav()" href="javascript:void(0)" class="close-btn">
+                </div>
 
                 <div id="nav-links">
                     <a href="/main" class="sidebar-text" id="sidebar-headline">Headline</a>
@@ -24,11 +25,6 @@
                     <a href="/sports" class="sidebar-text" id="sidebar-sports">Sports</a>
                     <a href="/technology" class="sidebar-text" id="sidebar-technology">Technology</a>
                 </div>
-
-                <form>
-                    <input type="text" id="search-box">
-                    <input type="submit" id="search-button">
-                </form>
                 
             </div>
 

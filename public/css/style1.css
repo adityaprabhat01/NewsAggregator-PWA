@@ -150,9 +150,17 @@ form {
 .close-btn {
     height: 50px;
     width: 50px;
-    margin-left: 85%;
 }
 
 .close-btn:hover {
     cursor: pointer;
+}
+
+.close-button-parent {
+    margin-left: 87%;
+}
+
+.close-button-parent:hover {
+    cursor: pointer;
+    background-color: #6c6c77;
 }
