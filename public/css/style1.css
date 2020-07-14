@@ -13,6 +13,7 @@ h1 {
     position: fixed;
     top: 0;
     bottom: 0;
+    height: 40px;
 }
 
 .heading {
