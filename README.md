@@ -1,2 +1,2 @@
 # NewsAggregator
-[News Aggregator](https://aditya-news-aggregator.herokuapp.com/)
+[News Aggregator](https://news-aggregator-pwa.herokuapp.com/)
