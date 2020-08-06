@@ -1,8 +1,18 @@
+if('serviceWorker' in navigator){
+    navigator.serviceWorker.register('/sw.js')
+      .then(reg => {
+        console.log('service worker registered', reg) 
+        loadNews()
+      })
+      .catch(err => console.log('service worker not registered', err));
+}
+
+console.log('outside register')
 function loadNews() {
 
     const cat = location.href.split('/')[3]
-    //http://localhost:3001
-    fetch('/category?category=' + cat).then((response) => {
+
+    fetch('http://localhost:3001/category?category=' + cat).then((response) => {
         response.json().then((data) => {
             console.log(data)
             
@@ -26,7 +36,7 @@ function loadNews() {
                     imageCol1.appendChild(img)
 
                     
-                    var titleCol2 = document.createElement("div")
+                    var titleCol2 = document.createElement("span")
                     titleCol2.setAttribute("class", "title-col-2")
                     titleCol2.innerHTML = data.title[i]
 
@@ -45,7 +55,7 @@ function loadNews() {
     })
 }
 
-window.onload = loadNews()
+// window.onload = loadNews()
 
 document.getElementById('sidebar-headline').addEventListener('click', (e) => {
     loadHeadlines()

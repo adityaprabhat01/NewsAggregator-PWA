@@ -12,7 +12,6 @@
     "express": "^4.17.1",
     "hbs": "^4.1.1",
     "request": "^2.88.2",
-    "require": "^2.4.20",
-    "serverless-http": "^2.5.0"
+    "require": "^2.4.20"
   }
 }

@@ -3,8 +3,8 @@ const express = require('express')
 const category = require('./backend/category')
 const topHeadlines = require('./backend/topHeadlines')
 
+const port = 3001
 const app = express()
-const port = process.env.PORT || 3001
 
 //views
 app.set('view engine', 'hbs')
@@ -15,7 +15,7 @@ const publicDirectoryPath = path.join(__dirname, '../public')
 app.use(express.static(publicDirectoryPath))
 
 //rendered pages
-app.get('/', (req, res) => {
+app.get('/main', (req, res) => {
     res.render('index')
 })
 
@@ -43,6 +43,9 @@ app.get('/technology', (req, res) => {
     res.render('technology')
 })
 
+app.get('/fallback', (req, res) => {
+    res.render('fallback')
+})
 
 //routed pages
 app.get('/topHeadlines', (req, res) => {
