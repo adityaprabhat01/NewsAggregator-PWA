@@ -1,7 +1,7 @@
 {
     "name": "News Aggregator",
     "short_name": "NewsAggregator",
-    "start_url": "/main",
+    "start_url": "/",
     "display": "standalone",
     "background_color": "#6A89CC",
     "theme_color": "#6A89CC",
