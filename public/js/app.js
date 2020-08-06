@@ -5,18 +5,14 @@ if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/sw.js')
         .then(reg => {
             console.log('service worker registered', reg)
-            loadHeadlines();
-            loadCategories()
         })
         .catch(err => console.log('service worker not registered', err));
 }
 
-console.log('outside register')
 
 async function loadHeadlines() {
     // http://localhost:3001
     await fetch('/topHeadlines').then((response) => {
-        console.log(response)
         response.json().then((data) => {
             const newsImageCol1 = document.getElementsByClassName('news-image-col-1-url-image')
             const newsContentCol1 = document.getElementsByClassName('news-content-col-1')
@@ -24,10 +20,8 @@ async function loadHeadlines() {
             const newsImageCol2 = document.getElementsByClassName('news-image-col-2-url-image')
             const newsContentCol2 = document.getElementsByClassName('news-content-col-2')
 
-            //const coverMain = document.getElementById('cover-main')
             const rowsCol1 = document.getElementsByClassName('rows-col-1')
             const rowsCol2 = document.getElementsByClassName('rows-col-2')
-            //coverMain.src = data.urlToImage[0]
         
             var i = 1, j = 0
 
@@ -103,8 +97,8 @@ document.getElementById('sidebar-headline').addEventListener('click', (e) => {
     loadHeadlines()
 })
 
-// window.onload = loadHeadlines()
-// window.onload = loadCategories()
+window.onload = loadHeadlines()
+window.onload = loadCategories()
 
 
 function openNav() {
