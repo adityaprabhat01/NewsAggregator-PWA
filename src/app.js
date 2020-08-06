@@ -15,7 +15,7 @@ const publicDirectoryPath = path.join(__dirname, '../public')
 app.use(express.static(publicDirectoryPath))
 
 //rendered pages
-app.get('/main', (req, res) => {
+app.get('/', (req, res) => {
     res.render('index')
 })
 
