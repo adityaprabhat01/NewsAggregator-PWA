@@ -1,22 +1,23 @@
 const express = require('express')
 const router = express.Router()
-const topHeadlines = require('../controller/topHeadlines')
+
 const category = require('../controller/category')
+const topHeadlines = require('../controller/topHeadlines')
 
-router.app.get('/', topHeadlines.topHeadlines)
+router.get('/', topHeadlines.topHeadlines)
 
-router.app.get('/business', category.category)
+router.get('/business', category.category)
 
-router.app.get('/entertainment', category.category)
+router.get('/entertainment', category.category)
 
-router.app.get('/health', category.category)
+router.get('/health', category.category)
 
-router.app.get('/science', category.category)
+router.get('/science', category.category)
 
-router.app.get('/sports', category.category)
+router.get('/sports', category.category)
 
-router.app.get('/technology', category.category)
+router.get('/technology', category.category)
 
-router.app.get('/fallback', category.category)
+router.get('/fallback', category.category)
 
-module.exports = { router }
+module.exports =  router

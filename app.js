@@ -7,10 +7,10 @@ const app = express()
 
 // paths
 const viewsPath = path.join(__dirname, './views')
-const publicDirectoryPath = path.join(__dirname, '../public')
+const publicDirectoryPath = path.join(__dirname, './public')
 
 //views
-app.set('view engine', 'hbs')
+app.set('view engine', 'ejs')
 app.set('views', viewsPath)
 
 // public

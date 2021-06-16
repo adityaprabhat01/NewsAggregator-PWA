@@ -13,8 +13,8 @@
 
     <!--navbar-->
 
-
-
+    
+    <p><%= descriptions[1] %></p>
 
     <div id="headlines" class="top-stories">
 
@@ -24,7 +24,6 @@
                 <div class="news-image-col-1">
                     <img src="" class="news-image-col-1-url-image">
                 </div>
-
                 <span class="news-content-col-1"></span>
             </a>
 
@@ -315,7 +314,12 @@
 
 
 </body>
+<script>
+    console.log(('<%= urlToImages %>'))
+    var sources = '<%= sources %>';
+    var titles = '<%= titles %>';
 
+  </script>
 <script src="/js/app.js"></script>
 
 </html>

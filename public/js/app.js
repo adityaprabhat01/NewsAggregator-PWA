@@ -1,5 +1,6 @@
 const categories = ['business', 'entertainment', 'health', 'science', 'sports', 'technology']
 
+/*
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/sw.js')
         .then(reg => {
@@ -7,7 +8,6 @@ if ('serviceWorker' in navigator) {
         })
         .catch(err => console.log('service worker not registered', err));
 }
-
 
 async function loadHeadlines() {
     await fetch('/topHeadlines').then((response) => {
@@ -118,3 +118,5 @@ function getData(data, i){
     ) i++;
     return i;
 }
+
+*/

@@ -23,6 +23,7 @@ const topHeadlines = (req, res) => {
           urls[i] = body.articles[i].url;
           urlToImages[i] = body.articles[i].urlToImage;
         }
+
         res.render('index', { sources, titles, descriptions, urls, urlToImages })
       }
     })
