@@ -1,6 +1,7 @@
 const staticCacheName = 'NewsApp'
 const dynamicCacheName = 'NewsApp-dynamic'
 
+// A list of local resources we always want to be cached.
 const assets = [
   '/fallback',
   './js/app.js',
@@ -10,12 +11,14 @@ const assets = [
   '/manifest.json'
 ]
 
+/*
+// install handler precaches all the resources that we always need.
 self.addEventListener('install', evt => {
   evt.waitUntil(
     caches.open(staticCacheName)
-      .then(cache => {
-        cache.addAll(assets)
-      })
+      .then(cache => { cache.addAll(assets) })
+      // forces the waiting service worker to get activated
+      .then(self.skipWaiting())
   )
 })
 
@@ -52,3 +55,5 @@ self.addEventListener('fetch', evt => {
     )
   )
 })
+
+*/

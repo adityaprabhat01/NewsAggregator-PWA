@@ -10,11 +10,8 @@ console.log('outside register')
 function loadNews() {
 
     const cat = location.href.split('/')[3]
-    // http://localhost:3001
     fetch('/category?category=' + cat).then((response) => {
         response.json().then((data) => {
-            console.log(data)
-            
             var content = document.getElementById("content")
             for (var i=0;i<data.description.length;i+=1) {
                 if(

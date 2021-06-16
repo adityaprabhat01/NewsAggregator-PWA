@@ -1,21 +1,16 @@
 const request = require('request')
-const express = require('express')
 
 const topHeadlines = (callback) => {
 
-    url = 'https://newsapi.org/v2/top-headlines?country=in&apiKey=add814b0c6064962826dc0a66259776e'
+    const url = 'https://newsapi.org/v2/top-headlines?country=in&apiKey=add814b0c6064962826dc0a66259776e'
     
     request( { url, json: true }, (error , response , body) => {
 
         if (error) {
             return callback("No Internet Connection", undefined)
-        }
-
-        else if (body.status != 'ok') {
+        } else if (body.status != 'ok') {
             return callback("Unable to fetch news data")
-        }
-
-        else {
+        } else {
             sources = []
             titles = []
             descriptions = []

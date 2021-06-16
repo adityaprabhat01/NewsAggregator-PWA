@@ -1,5 +1,4 @@
 const request = require('request')
-const express = require('express')
 
 const category = (cat, callback) => {
 
@@ -16,7 +15,6 @@ const category = (cat, callback) => {
         }
 
         else {
-
             sources = []
             titles = []
             descriptions = []
