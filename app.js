@@ -1,0 +1,25 @@
+const path = require('path')
+const express = require('express')
+const newsRoutes = require('./routes/newsRoutes')
+
+const port = process.env.PORT || 3000
+const app = express()
+
+// paths
+const viewsPath = path.join(__dirname, './views')
+const publicDirectoryPath = path.join(__dirname, '../public')
+
+//views
+app.set('view engine', 'hbs')
+app.set('views', viewsPath)
+
+// public
+app.use(express.static(publicDirectoryPath))
+
+// routes
+app.use('/', newsRoutes)
+
+// listen
+app.listen(port, () => {
+    console.log('Server is up on port ' + port)
+})
