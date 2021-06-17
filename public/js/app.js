@@ -8,10 +8,10 @@ if ('serviceWorker' in navigator) {
         })
         .catch(err => console.log('service worker not registered', err));
 }
+*/
 
-async function loadHeadlines() {
-    await fetch('/topHeadlines').then((response) => {
-        response.json().then((data) => {
+function loadHeadlines() {
+
 
             const newsImageCol1 = document.getElementsByClassName('news-image-col-1-url-image')
             const newsContentCol1 = document.getElementsByClassName('news-content-col-1')
@@ -25,38 +25,37 @@ async function loadHeadlines() {
             var i = 1, j = 0
 
             for (i, j; j < 3; i += 1, j += 1) {
-                if (data.description[i] === "" ||
-                    data.title[i] === "" ||
-                    data.url[i] === "" ||
-                    data.urlToImage[i] === null
+                if (descriptions[i] === "" ||
+                    titles[i] === "" ||
+                    urls[i] === "" ||
+                    urlToImages[i] === null
                 ) {
                     j -= 1
                 }
                 else {
-                    rowsCol1[j].href = data.url[i]
-                    newsContentCol1[j].innerHTML = data.title[i]
-                    newsImageCol1[j].src = data.urlToImage[i]
+                    rowsCol1[j].href = urls[i]
+                    newsContentCol1[j].innerHTML = titles[i]
+                    newsImageCol1[j].src = urlToImages[i]
                 }
             }
 
             for (i, j = 0; j < 4; i += 1, j += 1) {
-                if (data.description[i] === "" ||
-                    data.title[i] === "" ||
-                    data.url[i] === "" ||
-                    data.urlToImage[i] === null
+                if (descriptions[i] === "" ||
+                    titles[i] === "" ||
+                    urls[i] === "" ||
+                    urlToImages[i] === null
                 ) {
                     j -= 1
                 }
                 else {
-                    rowsCol2[j].href = data.url[i]
-                    newsContentCol2[j].innerHTML = data.title[i]
-                    newsImageCol2[j].src = data.urlToImage[i]
+                    rowsCol2[j].href = urls[i]
+                    newsContentCol2[j].innerHTML = titles[i]
+                    newsImageCol2[j].src = urlToImages[i]
                 }
             }
-        })
-    })
 }
 
+/*
 async function loadCategories() {
     for (category of categories) {
         const fetchCategory = category
@@ -92,13 +91,14 @@ async function loadCategories() {
         })
     }
 }
+*/
 
 document.getElementById('sidebar-headline').addEventListener('click', (e) => {
     loadHeadlines()
 })
 
 window.onload = loadHeadlines()
-window.onload = loadCategories()
+// window.onload = loadCategories()
 
 function openNav() {
     document.getElementById("sidebar").style.width = "400px";
@@ -108,15 +108,14 @@ function closeNav() {
     document.getElementById("sidebar").style.width = "0";
 }
 
-function getData(data, i){
-    i++;
-    while(
-        data.description[i] === "" ||
-        data.title[i] === "" ||
-        data.url[i] === "" ||
-        data.urlToImage[i] === null
-    ) i++;
-    return i;
-}
+// function getData(data, i){
+//     i++;
+//     while(
+//         data.description[i] === "" ||
+//         data.title[i] === "" ||
+//         data.url[i] === "" ||
+//         data.urlToImage[i] === null
+//     ) i++;
+//     return i;
+// }
 
-*/
