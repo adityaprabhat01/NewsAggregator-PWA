@@ -1,18 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<!--header-->
+    <%- include("./partials/header.ejs") %>
 
 <body>
     <div class="heading">
         <h1>Science</h1>
-        <!--sidebar-->
+        <%- include("./partials/sidebar.ejs") %>
 
     </div>
 
     <div id="content"></div>
 </body>
-
+<script type="text/javascript">
+    var sources = <%- JSON.stringify(sources) %>;
+    var titles = <%- JSON.stringify(titles) %>;
+    var descriptions = <%- JSON.stringify(descriptions) %>;
+    var urls = <%- JSON.stringify(urls) %>;
+    var urlToImages = <%- JSON.stringify(urlToImages) %>;
+</script>
 <script src="/js/app2.js"></script>
 
 </html>
