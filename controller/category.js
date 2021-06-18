@@ -18,7 +18,7 @@ const category = (req, res) => {
         let descriptions = [];
         let urls = [];
         let urlToImages = [];
-        console.log(body)
+        
         for (var i = 0; i < body.articles.length; i += 1) {
           sources[i] = body.articles[i].source.name;
           titles[i] = body.articles[i].title;
@@ -40,4 +40,10 @@ const category = (req, res) => {
     });
 };
 
-module.exports = { category };
+const renderPage = (req, res) => {
+  const pathname = req.path
+  const cat = pathname.slice(1, pathname.length)  
+  res.render(cat)
+}
+
+module.exports = { category, renderPage };

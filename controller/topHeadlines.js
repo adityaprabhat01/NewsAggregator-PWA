@@ -32,4 +32,8 @@ const topHeadlines = (req, res) => {
     })
 };
 
-module.exports = { topHeadlines };
+const renderPage = (req, res) => {
+  res.render('index')
+}
+
+module.exports = { topHeadlines, renderPage };
