@@ -6,9 +6,8 @@ const topHeadlines = (req, res) => {
   fetch(url)
     .then((res) => res.json())
     .then((body) => {
-      
       if (body.status != "ok") {
-        res.send("Unable to fetch news data")
+        res.send("Unable to fetch news data");
       } else {
         let sources = [];
         let titles = [];
@@ -24,12 +23,18 @@ const topHeadlines = (req, res) => {
           urlToImages[i] = body.articles[i].urlToImage;
         }
 
-        res.render('index', { sources, titles, descriptions, urls, urlToImages })
+        res.render("index", {
+          sources,
+          titles,
+          descriptions,
+          urls,
+          urlToImages,
+        });
       }
     })
     .catch(() => {
-        res.status(404).render('fallback', {})
-    })
+      res.status(404).render("fallback", {});
+    });
 };
 
 module.exports = { topHeadlines };

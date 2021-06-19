@@ -32,20 +32,20 @@ h1 {
   margin-top: 0;
 }
 
-#sidebar-icon {
-  font-size: 50px;
-  height: 60px;
-  width: 60px;
-  cursor: pointer;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-}
-
 .heading {
-  height: 10%;
   width: 100%;
   position: relative;
+}
+
+#sidebar-icon {
+  border: 2px solid #494d52;
+  border-radius: 4px;
+  font-size: 40px;
+  height: auto;
+  width: auto;
+  cursor: pointer;
+  position: absolute;
+  bottom: 0;
 }
 
 #content {
@@ -135,6 +135,7 @@ form {
 #sidebar {
   top: 0;
   bottom: 0;
+  left: 0;
   display: flex;
   flex-direction: column;
   position: absolute;
@@ -157,11 +158,17 @@ form {
   color: #f1f1f5;
   transition: 0.3s;
   padding: 1em;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
 }
 
 .sidebar-text:hover {
   color: #6c6c77;
+}
+
+.close-button-parent {
+  border: 2px solid #494d52;
+  border-radius: 4px;
+  margin-left: 87%;
 }
 
 .close-btn {
@@ -170,6 +177,7 @@ form {
   margin-left: 85%;
 }
 
-.close-btn:hover {
+.close-button-parent:hover {
   cursor: pointer;
+  background-color: #6c6c77;
 }

@@ -39,7 +39,8 @@ function loadHeadlines() {
       descriptions[i] === "" ||
       titles[i] === "" ||
       urls[i] === "" ||
-      urlToImages[i] === null
+      urlToImages[i] === null ||
+      urlToImages[i] === ""
     ) {
       j -= 1;
     } else {
@@ -54,7 +55,8 @@ function loadHeadlines() {
       descriptions[i] === "" ||
       titles[i] === "" ||
       urls[i] === "" ||
-      urlToImages[i] === null
+      urlToImages[i] === null ||
+      urlToImages[i] === ""
     ) {
       j -= 1;
     } else {
