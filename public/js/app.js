@@ -68,17 +68,13 @@ function loadHeadlines() {
 }
 
 async function loadCategories(category) {
-  const url =
-    "https://newsapi.org/v2/top-headlines?country=in&category=" +
-    category +
-    "&apiKey=add814b0c6064962826dc0a66259776e";
-
+  
+  const url = "/category_headline" + "?category=" + category
   await fetch(url)
-    .then((res) => res.json())
+    .then((res) => {
+      res.json()
+    })
     .then((body) => {
-      if (body.status != "ok") {
-        res.send("Unable to fetch news data");
-      } else {
         let sources = [];
         let titles = [];
         let descriptions = [];
@@ -129,8 +125,11 @@ async function loadCategories(category) {
         cat.children[1].children[2].children[0].children[0].src =
           data.urlToImages[i];
         cat.children[1].children[2].children[1].innerHTML = data.titles[i];
-      }
-    });
+      
+    })
+    .catch((err) => {
+      console.log(err)
+    })
 }
 
 document.getElementById("sidebar-headline").addEventListener("click", (e) => {

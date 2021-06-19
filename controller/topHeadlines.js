@@ -7,7 +7,7 @@ const topHeadlines = (req, res) => {
     .then((res) => res.json())
     .then((body) => {
       if (body.status != "ok") {
-        res.send("Unable to fetch news data");
+        res.send("Unable to fetch Top Headlines");
       } else {
         let sources = [];
         let titles = [];

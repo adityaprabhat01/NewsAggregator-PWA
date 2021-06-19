@@ -17,7 +17,7 @@ app.set('views', viewsPath)
 app.use(express.static(publicDirectoryPath))
 
 // routes
-app.use('/', newsRoutes)
+app.use('', newsRoutes)
 
 // listen
 app.listen(port, () => {
