@@ -43,7 +43,7 @@ const category = (req, res) => {
 const category_headline = (req, res) => {
   const pathname = req.query.category
   const cat = pathname
-  console.log(cat)
+  
   const url =
     "https://newsapi.org/v2/top-headlines?country=in&category=" +
     cat +
@@ -66,7 +66,7 @@ const category_headline = (req, res) => {
           urls[i] = body.articles[i].url;
           urlToImages[i] = body.articles[i].urlToImage;
         }
-        
+
         res.send({
           sources,
           titles,

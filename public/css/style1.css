@@ -48,6 +48,10 @@ h1 {
   bottom: 0;
 }
 
+#sidebar-icon:hover {
+  background-color: #878b91;
+}
+
 #content {
   display: flex;
   flex-direction: column;
@@ -83,7 +87,9 @@ h1 {
 .categorical-news-image-col-1-url-image {
   height: 100%;
   width: 100%;
-  object-fit: cover;
+  object-fit: contain;
+  max-width: 255px;
+  max-height: 255px;
 }
 
 .title-col-2 {

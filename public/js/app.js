@@ -68,35 +68,13 @@ function loadHeadlines() {
 }
 
 async function loadCategories(category) {
-  
-  const url = "/category_headline" + "?category=" + category
+  const url = "/category_headline" + "?category=" + category;
   await fetch(url)
     .then((res) => {
-      res.json()
-    })
-    .then((body) => {
-        let sources = [];
-        let titles = [];
-        let descriptions = [];
-        let urls = [];
-        let urlToImages = [];
+      res.json().then((body) => {
 
-        for (var i = 0; i < body.articles.length; i += 1) {
-          sources[i] = body.articles[i].source.name;
-          titles[i] = body.articles[i].title;
-          descriptions[i] = body.articles[i].description;
-          urls[i] = body.articles[i].url;
-          urlToImages[i] = body.articles[i].urlToImage;
-        }
+        const data = body
 
-        const data = {
-          sources,
-          titles,
-          descriptions,
-          urls,
-          urlToImages,
-        };
-        console.log(category, data);
         cat = document.getElementById(category);
 
         const newsCol = document.getElementById(category);
@@ -125,11 +103,12 @@ async function loadCategories(category) {
         cat.children[1].children[2].children[0].children[0].src =
           data.urlToImages[i];
         cat.children[1].children[2].children[1].innerHTML = data.titles[i];
-      
+      });
     })
+
     .catch((err) => {
-      console.log(err)
-    })
+      console.log(err);
+    });
 }
 
 document.getElementById("sidebar-headline").addEventListener("click", (e) => {
