@@ -1,21 +1,11 @@
-const categories = [
-  "business",
-  "entertainment",
-  "health",
-  "science",
-  "sports",
-  "technology",
-];
-
-/*
-if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/sw.js')
-        .then(reg => {
-            console.log('service worker registered')
-        })
-        .catch(err => console.log('service worker not registered', err));
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker
+    .register("/sw.js")
+    .then((reg) => {
+      console.log("service worker registered");
+    })
+    .catch((err) => console.log("service worker not registered", err));
 }
-*/
 
 function loadHeadlines() {
   const newsImageCol1 = document.getElementsByClassName(
@@ -72,8 +62,7 @@ async function loadCategories(category) {
   await fetch(url)
     .then((res) => {
       res.json().then((body) => {
-
-        const data = body
+        const data = body;
 
         cat = document.getElementById(category);
 
