@@ -1,11 +1,11 @@
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker
-    .register("/sw.js")
-    .then((reg) => {
-      console.log("service worker registered");
-    })
-    .catch((err) => console.log("service worker not registered", err));
-}
+// if ("serviceWorker" in navigator) {
+//   navigator.serviceWorker
+//     .register("/sw.js")
+//     .then((reg) => {
+//       console.log("service worker registered");
+//     })
+//     .catch((err) => console.log("service worker not registered", err));
+// }
 
 function loadHeadlines() {
   const newsImageCol1 = document.getElementsByClassName(
@@ -100,9 +100,83 @@ async function loadCategories(category) {
     });
 }
 
+function showMore() {
+  var content = document.getElementById("content-more");
+  const data = {
+    sources,
+    titles,
+    descriptions,
+    urls,
+    urlToImages,
+  };
+  for (var i = 0; i < data.descriptions.length; i += 1) {
+    if (
+      data.urls[i] !== "" &&
+      data.urlToImages[i] !== null &&
+      data.urlToImages[i] !== "" &&
+      data.titles[i] !== "" &&
+      data.descriptions[i] !== ""
+    ) {
+      var newsRow = document.createElement("a");
+      newsRow.setAttribute("class", "news-row-more");
+      newsRow.href = data.urls[i];
+
+      var imageCol1 = document.createElement("div");
+      imageCol1.setAttribute("class", "image-col-1-more");
+      var img = document.createElement("img");
+      img.src = data.urlToImages[i];
+      img.setAttribute("class", "categorical-news-image-col-1-url-image-more");
+      imageCol1.appendChild(img);
+
+      var titleCol2 = document.createElement("span");
+      titleCol2.setAttribute("class", "title-col-2-more");
+      titleCol2.innerHTML = data.titles[i];
+
+      var desriptionCol3 = document.createElement("span");
+      desriptionCol3.setAttribute("class", "description-col-3-more");
+      desriptionCol3.innerHTML = data.descriptions[i];
+
+      const hr = document.createElement("hr");
+
+      newsRow.append(imageCol1, titleCol2, desriptionCol3);
+      content.appendChild(newsRow);
+      content.appendChild(hr);
+    }
+  }
+  document.getElementById("show-more-headline").style.display = "none";
+
+  var show_less = document.createElement("button");
+  show_less.setAttribute("class", "show-less");
+  show_less.setAttribute("id", "show-less-headline");
+  show_less.innerHTML = "Show less";
+  show_less.addEventListener("click", showLess);
+  document.getElementById("more").appendChild(show_less);
+  //document.getElementById("show-less-headline").style.display = "inline"
+}
+
+function showLess() {
+  var myNode = document.getElementById("content-more");
+  var fc = myNode.firstChild;
+  while (fc) {
+    myNode.removeChild(fc);
+    fc = myNode.firstChild;
+  }
+  document.getElementById("show-less-headline").remove()
+  document.getElementById("show-more-headline").style.display = "inline-block";
+  window.scroll({
+    top: 0, 
+    left: 0, 
+    behavior: 'smooth'
+  });
+}
+
 document.getElementById("sidebar-headline").addEventListener("click", (e) => {
   loadHeadlines();
 });
+
+document
+  .getElementById("show-more-headline")
+  .addEventListener("click", showMore);
 
 window.onload = loadHeadlines();
 window.onload = loadCategories("business");

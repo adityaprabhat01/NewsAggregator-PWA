@@ -1,3 +1,7 @@
+html {
+  scroll-behavior: smooth;
+}
+
 hr {
   width: 90%;
   max-width: 1200px;
@@ -406,3 +410,4 @@ form {
   font-size: 1.2rem;
   font-family: "News Cycle", sans-serif;
 }
+

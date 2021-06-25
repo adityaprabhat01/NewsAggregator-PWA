@@ -187,3 +187,8 @@ form {
   cursor: pointer;
   background-color: #6c6c77;
 }
+
+.show-more {
+  margin-top: 5%;
+  margin-left: 45%;
+}
