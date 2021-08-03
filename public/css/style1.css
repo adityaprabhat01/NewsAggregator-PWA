@@ -1,4 +1,4 @@
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 1000px) {
   .news-row {
     flex-direction: column !important;
   }
@@ -6,6 +6,7 @@
     width: 90% !important;
   }
   .categorical-news-image-col-1-url-image {
+    height: auto !important;
     width: 90% !important;
   }
   .title-col-2 {
