@@ -1,11 +1,17 @@
 const fetch = require("node-fetch");
 
-const category = (req, res) => {
+const category_template = (req, res) => {
   const pathname = req.path
-  const cat = pathname.slice(1, pathname.length)  
+  const cat = pathname.slice(1, pathname.length) 
+  res.render(cat)
+}
+
+const category = (req, res) => {
+  const pathname = req.query.category
+  
   const url =
     "https://newsapi.org/v2/top-headlines?country=in&category=" +
-    cat +
+    pathname +
     "&apiKey=add814b0c6064962826dc0a66259776e";
   fetch(url)
     .then((res) => res.json())
@@ -26,7 +32,7 @@ const category = (req, res) => {
           urlToImages[i] = body.articles[i].urlToImage;
         }
         
-        res.render(cat, {
+        res.send({
           sources,
           titles,
           descriptions,
@@ -81,4 +87,4 @@ const category_headline = (req, res) => {
     });
 };
 
-module.exports = { category, category_headline };
+module.exports = { category, category_headline, category_template };

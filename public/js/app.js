@@ -1,60 +1,85 @@
-// if ("serviceWorker" in navigator) {
-//   navigator.serviceWorker
-//     .register("/sw.js")
-//     .then((reg) => {
-//       console.log("service worker registered");
-//     })
-//     .catch((err) => console.log("service worker not registered", err));
-// }
+if ("serviceWorker" in navigator) {
+  window.addEventListener('load', function () {
+    navigator.serviceWorker
+    .register("/sw.js")
+    .then(function (res){
+      console.log("service worker registered");
+    }, function (err) {
+      console.log("service worker not registered")
+    })
+  })
+}
 
-function loadHeadlines() {
-  const newsImageCol1 = document.getElementsByClassName(
-    "news-image-col-1-url-image"
-  );
-  const newsContentCol1 = document.getElementsByClassName("news-content-col-1");
+let _i, _data;
 
-  const newsImageCol2 = document.getElementsByClassName(
-    "news-image-col-2-url-image"
-  );
-  const newsContentCol2 = document.getElementsByClassName("news-content-col-2");
-
-  const rowsCol1 = document.getElementsByClassName("rows-col-1");
-  const rowsCol2 = document.getElementsByClassName("rows-col-2");
-
-  var i = 1,
-    j = 0;
-
-  for (i, j; j < 3; i += 1, j += 1) {
-    if (
-      descriptions[i] === "" ||
-      titles[i] === "" ||
-      urls[i] === "" ||
-      urlToImages[i] === null ||
-      urlToImages[i] === ""
-    ) {
-      j -= 1;
-    } else {
-      rowsCol1[j].href = urls[i];
-      newsContentCol1[j].innerHTML = titles[i];
-      newsImageCol1[j].src = urlToImages[i];
-    }
-  }
-
-  for (i, j = 0; j < 4; i += 1, j += 1) {
-    if (
-      descriptions[i] === "" ||
-      titles[i] === "" ||
-      urls[i] === "" ||
-      urlToImages[i] === null ||
-      urlToImages[i] === ""
-    ) {
-      j -= 1;
-    } else {
-      rowsCol2[j].href = urls[i];
-      newsContentCol2[j].innerHTML = titles[i];
-      newsImageCol2[j].src = urlToImages[i];
-    }
-  }
+async function loadHeadlines() {
+  fetch('/topHeadlines')
+  .then(res => {
+    res.json().then(data => {
+      const {      
+        titles,
+        descriptions,
+        urls,
+        urlToImages,
+      } = data
+      
+      const newsImageCol1 = document.getElementsByClassName(
+        "news-image-col-1-url-image"
+      );
+      const newsContentCol1 = document.getElementsByClassName("news-content-col-1");
+    
+      const newsImageCol2 = document.getElementsByClassName(
+        "news-image-col-2-url-image"
+      );
+      const newsContentCol2 = document.getElementsByClassName("news-content-col-2");
+    
+      const rowsCol1 = document.getElementsByClassName("rows-col-1");
+      const rowsCol2 = document.getElementsByClassName("rows-col-2");
+    
+      var i = 1,
+        j = 0;
+    
+      for (i, j; j < 3; i += 1, j += 1) {
+        if (
+          descriptions[i] === "" ||
+          titles[i] === "" ||
+          urls[i] === "" ||
+          urlToImages[i] === null ||
+          urlToImages[i] === ""
+        ) {
+          j -= 1;
+        } else {
+          rowsCol1[j].href = urls[i];
+          newsContentCol1[j].innerHTML = titles[i];
+          newsImageCol1[j].src = urlToImages[i];
+        }
+      }
+    
+      for (i, j = 0; j < 4; i += 1, j += 1) {
+        if (
+          descriptions[i] === "" ||
+          titles[i] === "" ||
+          urls[i] === "" ||
+          urlToImages[i] === null ||
+          urlToImages[i] === ""
+        ) {
+          j -= 1;
+        } else {
+          rowsCol2[j].href = urls[i];
+          newsContentCol2[j].innerHTML = titles[i];
+          newsImageCol2[j].src = urlToImages[i];
+        }
+      }
+      document.getElementById("head-loader").style.visibility = "hidden"
+      document.getElementById("headlines").style.visibility = "visible"
+      _i = i;
+      _data = data;
+    })
+  })
+  .catch(err => {
+    console.log(err)
+  })
+  
 }
 
 async function loadCategories(category) {
@@ -62,6 +87,7 @@ async function loadCategories(category) {
   await fetch(url)
     .then((res) => {
       res.json().then((body) => {
+        
         const data = body;
 
         cat = document.getElementById(category);
@@ -92,6 +118,9 @@ async function loadCategories(category) {
         cat.children[1].children[2].children[0].children[0].src =
           data.urlToImages[i];
         cat.children[1].children[2].children[1].innerHTML = data.titles[i];
+
+        document.getElementById(category + "-loader").style.visibility = "hidden"
+        document.getElementById(category).style.visibility = "visible"
       });
     })
 
@@ -102,39 +131,33 @@ async function loadCategories(category) {
 
 function showMore() {
   var content = document.getElementById("content-more");
-  const data = {
-    sources,
-    titles,
-    descriptions,
-    urls,
-    urlToImages,
-  };
-  for (var i = 0; i < data.descriptions.length; i += 1) {
+
+  for (i = _i; i < _data.descriptions.length; i += 1) {
     if (
-      data.urls[i] !== "" &&
-      data.urlToImages[i] !== null &&
-      data.urlToImages[i] !== "" &&
-      data.titles[i] !== "" &&
-      data.descriptions[i] !== ""
+      _data.urls[i] !== "" &&
+      _data.urlToImages[i] !== null &&
+      _data.urlToImages[i] !== "" &&
+      _data.titles[i] !== "" &&
+      _data.descriptions[i] !== ""
     ) {
       var newsRow = document.createElement("a");
       newsRow.setAttribute("class", "news-row-more");
-      newsRow.href = data.urls[i];
+      newsRow.href = _data.urls[i];
 
       var imageCol1 = document.createElement("div");
       imageCol1.setAttribute("class", "image-col-1-more");
       var img = document.createElement("img");
-      img.src = data.urlToImages[i];
+      img.src = _data.urlToImages[i];
       img.setAttribute("class", "categorical-news-image-col-1-url-image-more");
       imageCol1.appendChild(img);
 
       var titleCol2 = document.createElement("span");
       titleCol2.setAttribute("class", "title-col-2-more");
-      titleCol2.innerHTML = data.titles[i];
+      titleCol2.innerHTML = _data.titles[i];
 
       var desriptionCol3 = document.createElement("span");
       desriptionCol3.setAttribute("class", "description-col-3-more");
-      desriptionCol3.innerHTML = data.descriptions[i];
+      desriptionCol3.innerHTML = _data.descriptions[i];
 
       const hr = document.createElement("hr");
 
@@ -151,7 +174,6 @@ function showMore() {
   show_less.innerHTML = "Show less";
   show_less.addEventListener("click", showLess);
   document.getElementById("more").appendChild(show_less);
-  //document.getElementById("show-less-headline").style.display = "inline"
 }
 
 function showLess() {

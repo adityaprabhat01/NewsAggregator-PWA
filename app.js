@@ -2,7 +2,7 @@ const path = require('path')
 const express = require('express')
 const newsRoutes = require('./routes/newsRoutes')
 
-const port = process.env.PORT || 3000
+const port = process.env.PORT || 4000
 const app = express()
 
 // paths

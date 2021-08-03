@@ -12,7 +12,7 @@
     <%- include("./partials/navbar.ejs") %>
     
     
-
+    <div id="head-loader" class="loader">Loading...</div>
     <div id="headlines" class="top-stories">
 
         <div class="col-1">
@@ -96,6 +96,7 @@
 
 
     <h1>Business</h1>
+    <div id="business-loader" class="loader">Loading...</div>
     <div id="business" class="categorical-news">
         <a href="" class="categorical-news-col-1">
             <div class="categorical-news-image-col-1">
@@ -134,6 +135,7 @@
     <hr>
 
     <h1>Entertainment</h1>
+    <div id="entertainment-loader" class="loader">Loading...</div>
     <div id="entertainment" class="categorical-news">
         <a href="" class="categorical-news-col-1">
             <div href="" class="categorical-news-image-col-1">
@@ -172,6 +174,7 @@
     <hr>
 
     <h1>Health</h1>
+    <div id="health-loader" class="loader">Loading...</div>
     <div id="health" class="categorical-news">
         <a href="" class="categorical-news-col-1">
             <div class="categorical-news-image-col-1">
@@ -210,6 +213,7 @@
     <hr>
 
     <h1>Science</h1>
+    <div id="science-loader" class="loader">Loading...</div>
     <div id="science" class="categorical-news">
         <a href="" class="categorical-news-col-1">
             <div class="categorical-news-image-col-1">
@@ -248,6 +252,7 @@
     <hr>
 
     <h1>Sports</h1>
+    <div id="sports-loader" class="loader">Loading...</div>
     <div id="sports" class="categorical-news">
         <a href="" class="categorical-news-col-1">
             <div class="categorical-news-image-col-1">
@@ -286,6 +291,7 @@
     <hr>
 
     <h1>Technology</h1>
+    <div id="technology-loader" class="loader">Loading...</div>
     <div id="technology" class="categorical-news">
         <a href="" class="categorical-news-col-1">
             <div class="categorical-news-image-col-1">
@@ -324,13 +330,7 @@
     <hr>
 
 </body>
-<script type="text/javascript">
-    var sources = <%- JSON.stringify(sources) %>;
-    var titles = <%- JSON.stringify(titles) %>;
-    var descriptions = <%- JSON.stringify(descriptions) %>;
-    var urls = <%- JSON.stringify(urls) %>;
-    var urlToImages = <%- JSON.stringify(urlToImages) %>;
-  </script>
+
 <script src="/js/app.js"></script>
 
 </html>

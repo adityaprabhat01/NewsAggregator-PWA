@@ -67,7 +67,6 @@ h1 {
 .news-row {
   color: black;
   height: auto;
-  height: auto;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -85,11 +84,14 @@ h1 {
 }
 
 .categorical-news-image-col-1-url-image {
-  height: 100%;
+  /* height: 100%;
   width: 100%;
   object-fit: contain;
   max-width: 255px;
-  max-height: 255px;
+  max-height: 255px; */
+  width: 280px;
+  height: 200px;
+  object-fit: cover;
 }
 
 .title-col-2 {
@@ -190,5 +192,9 @@ form {
 
 .show-more {
   margin-top: 5%;
+  margin-left: 45%;
+}
+
+#loader {
   margin-left: 45%;
 }

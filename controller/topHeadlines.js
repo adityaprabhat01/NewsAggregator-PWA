@@ -1,5 +1,10 @@
 const fetch = require("node-fetch");
 
+const headlines_template = (req, res) => {
+  console.log("sent")
+  res.render('index')
+}
+
 const topHeadlines = (req, res) => {
   const url =
     "https://newsapi.org/v2/top-headlines?country=in&apiKey=add814b0c6064962826dc0a66259776e";
@@ -22,8 +27,7 @@ const topHeadlines = (req, res) => {
           urls[i] = body.articles[i].url;
           urlToImages[i] = body.articles[i].urlToImage;
         }
-
-        res.render("index", {
+        res.send({
           sources,
           titles,
           descriptions,
@@ -33,8 +37,10 @@ const topHeadlines = (req, res) => {
       }
     })
     .catch(() => {
-      res.status(404).render("fallback", {});
+      console.log('Could not fetch')
+      res.send('Could not fetch')
+      //res.status(404).render("fallback", {});
     });
 };
 
-module.exports = { topHeadlines };
+module.exports = { topHeadlines, headlines_template };
