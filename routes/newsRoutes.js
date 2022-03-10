@@ -16,6 +16,6 @@ router.get('/topHeadlines', topHeadlines.topHeadlines)
 router.get('/category', category.category)
 router.get('/category_headline', category.category_headline)
 
-router.get('/fallback', category.category)
+router.get('/fallback', category.category_template)
 
 module.exports =  router

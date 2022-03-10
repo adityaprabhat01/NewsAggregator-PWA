@@ -1,11 +1,14 @@
+const str = new Date().valueOf().toString();
 const staticCacheName = "NewsApp";
-const dynamicCacheName = "NewsApp-dynamic";
-
+const dynamicCacheName = "NewsApp-dynamic-" + str;
+const imageCache = "Image-Cache-" + str;
+const imageTypes = ["jpg", "png", "jpeg", "apng", "avif", "gif", "svg", "webp"];
+console.log(str);
 /*
   The assets will be fetched from the server and doesn't
   depend whether these assets are received at that route.
   A list of local resources we always want to be cached.
-  Add urls to js, icons, css etc.
+  Add urls to js, icons, css etc
 */
 const assets = [
   "/fallback",
@@ -27,7 +30,6 @@ const assets = [
   "https://fonts.googleapis.com/css2?family=Oswald:wght@700&display=swap",
   "https://fonts.googleapis.com/css2?family=Work+Sans:wght@900&display=swap",
   "https://fonts.googleapis.com/css2?family=Lateef&display=swap",
-  "/"
 ];
 
 const limitCacheSize = (name, size) => {
@@ -38,6 +40,13 @@ const limitCacheSize = (name, size) => {
       }
     });
   });
+};
+
+const isValid = (response) => {
+  if (!response) return false;
+  var fetched = response.headers.get("sw-fetched-on");
+  if (fetched && parseFloat(fetched) + 200 > new Date().getTime()) return true;
+  return false;
 };
 
 /*
@@ -67,40 +76,92 @@ self.addEventListener("activate", (evt) => {
       name of old cache with the updated cache name i.e., if
       the cache name is not equal to the static cache name then
       that cache is filtered out in the new array which is then
-      mapped again and each of the old cache is deleted.
+      mapped again and each of the old cache is deleted. Activation and
+      installation only happens after sw is modified.
     */
     caches.keys().then((keys) => {
       return Promise.all(
         keys
           .filter((key) => key !== staticCacheName && key !== dynamicCacheName)
-          .map((key) => caches.delete(key))
+          .map((key) => {
+            console.log(key);
+            caches.delete(key);
+          })
       );
     })
   );
 });
 
-self.addEventListener("fetch", (evt) => {
-  
-  caches
-    .match(evt.request)
-    .then((cacheRes) => {
-      console.log(evt.request.url, cacheRes);
-      return (
-        cacheRes ||
-        fetch(evt.request).then((fetchRes) => {
-          return caches.open(dynamicCacheName).then((cache) => {
-            cache.put(evt.request.url, fetchRes.clone());
-            //limitCacheSize(dynamicCacheName, 10)
-            return fetchRes;
-          });
-        })
-      );
-    })
-    .catch(() => {
-      if (evt.request.url.indexOf(".html") > -1) {
-        return caches.match("/fallback");
-      }
-    });
-});
+self.addEventListener("fetch", (event) => {
+  event.respondWith(
+    caches
+      .match(event.request)
+      .then((cacheRes) => {
+        if (cacheRes) {
+          return cacheRes;
+        }
+        // if(event.request.url.indexOf("jpg" || "png" || "jpeg" || "apng" || "avif"|| "gif" || "svg" || "webp") > -1){
+        //   const clone = fetchRes.clone();
+        //   return fetch(event.request).then(fetchRes => {
+        //     event.waitUntil(
+        //       caches.open(imageCache).then(cache => {
+        //         cache.put(event.request.url, fetchRes.clone());
+        //         return fetchRes;
+        //       })
+        //     )
+        //   })
+        // }
+        // return fetch(event.request).then((fetchRes) => {
+        //   const clone = fetchRes.clone();
+        //   event.waitUntil(
+        //     caches.open(dynamicCacheName).then(cache => {
+        //       const headers = new Headers(clone.headers)
+        //       headers.append('sw-fetched-on', new Date().getTime());
+        //       return clone.blob().then(body => {
+        //         return cache.put(event.request.url, new Response(body, {
+        //           status: 200,
+        //           statusText: clone.statusText,
+        //           headers
+        //         }))
+        //       })
+        //     })
+        //   )
+        //   return fetchRes;
+        // });
 
-// indexedDB for saving the api fetched data
+        const destination = event.request.destination;
+        switch (destination) {
+          case "image":
+            event.waitUntil(
+              caches.open(imageCache).then((cache) => {
+                const xhr = new XMLHttpRequest();
+                xhr.responseType = "blob";
+                xhr.open("GET", event.request.url, true);
+                xhr.setRequestHeader("sw-fetched-on", new Date().getTime());
+                xhr.send();
+              })
+            );
+
+            break;
+          default:
+            return fetch(event.request).then((fetchRes) => {
+              const clone = fetchRes.clone();
+              console.log(destination);
+              event.waitUntil(
+                caches.open(dynamicCacheName).then((cache) => {
+                  return cache.put(event.request.url, clone);
+                })
+              );
+              return fetchRes;
+            });
+        }
+      })
+      .catch((err) => {
+        return caches.match("/fallback");
+        // console.log(err)
+        // if (event.request.mode === 'navigate' && event.request.url.indexOf(".html") > -1) {
+        //   return caches.match("/fallback");
+        // }
+      })
+  );
+});
