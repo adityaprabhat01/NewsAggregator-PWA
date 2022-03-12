@@ -1,7 +1,8 @@
-const str = new Date().valueOf().toString();
+const str = now();
 const staticCacheName = "NewsApp";
 const dynamicCacheName = "NewsApp-dynamic-" + str;
 const imageCache = "Image-Cache-" + str;
+const lastTimeOnline = "last-time-online";
 const imageTypes = ["jpg", "png", "jpeg", "apng", "avif", "gif", "svg", "webp"];
 console.log(str);
 /*
@@ -32,7 +33,9 @@ const assets = [
   "https://fonts.googleapis.com/css2?family=Lateef&display=swap",
 ];
 
-const limitCacheSize = (name, size) => {
+var lastOnline = ""
+
+function limitCacheSize(name, size) {
   caches.open(name).then((cache) => {
     cache.keys().then((keys) => {
       if (keys.length > size) {
@@ -42,12 +45,39 @@ const limitCacheSize = (name, size) => {
   });
 };
 
-const isValid = (response) => {
-  if (!response) return false;
-  var fetched = response.headers.get("sw-fetched-on");
-  if (fetched && parseFloat(fetched) + 200 > new Date().getTime()) return true;
-  return false;
+function isExpired(lastOnline) {
+  if (!lastOnline) return true;
+  if ((30000) + parseFloat(lastOnline) > new Date().getTime()) return false;
+  return true;
 };
+//1000 * 60 * 60 * 2
+function now() {
+  return new Date().valueOf().toString();
+}
+
+async function checkLastTimeOnline() {
+  caches.match(lastTimeOnline).then(cacheRes => {
+    let x;
+    if(cacheRes) {
+      cacheRes.json().then(body => {
+        console.log(body)
+        x = body.timestamp;
+      })
+      return cacheRes;
+    } else {
+      return null;
+    }
+  })
+}
+
+function setLastOnline() {
+  console.log("setLastOnline")
+  fetch("/lastOnline").then(res => {
+    caches.open(lastTimeOnline).then(cache => {
+      cache.put(lastTimeOnline, res);
+    })
+  })
+}
 
 /*
   install handler precaches all the resources that we always need.
@@ -92,76 +122,104 @@ self.addEventListener("activate", (evt) => {
   );
 });
 
-self.addEventListener("fetch", (event) => {
+self.addEventListener('fetch', function(event) {
+
   event.respondWith(
-    caches
-      .match(event.request)
-      .then((cacheRes) => {
-        if (cacheRes) {
-          return cacheRes;
-        }
-        // if(event.request.url.indexOf("jpg" || "png" || "jpeg" || "apng" || "avif"|| "gif" || "svg" || "webp") > -1){
-        //   const clone = fetchRes.clone();
-        //   return fetch(event.request).then(fetchRes => {
-        //     event.waitUntil(
-        //       caches.open(imageCache).then(cache => {
-        //         cache.put(event.request.url, fetchRes.clone());
-        //         return fetchRes;
-        //       })
-        //     )
-        //   })
-        // }
-        // return fetch(event.request).then((fetchRes) => {
-        //   const clone = fetchRes.clone();
-        //   event.waitUntil(
-        //     caches.open(dynamicCacheName).then(cache => {
-        //       const headers = new Headers(clone.headers)
-        //       headers.append('sw-fetched-on', new Date().getTime());
-        //       return clone.blob().then(body => {
-        //         return cache.put(event.request.url, new Response(body, {
-        //           status: 200,
-        //           statusText: clone.statusText,
-        //           headers
-        //         }))
-        //       })
-        //     })
-        //   )
-        //   return fetchRes;
-        // });
 
-        const destination = event.request.destination;
-        switch (destination) {
-          case "image":
-            event.waitUntil(
-              caches.open(imageCache).then((cache) => {
-                const xhr = new XMLHttpRequest();
-                xhr.responseType = "blob";
-                xhr.open("GET", event.request.url, true);
-                xhr.setRequestHeader("sw-fetched-on", new Date().getTime());
-                xhr.send();
-              })
-            );
+    caches.match(event.request).then(async function(cacheRes) {
 
-            break;
-          default:
-            return fetch(event.request).then((fetchRes) => {
-              const clone = fetchRes.clone();
-              console.log(destination);
-              event.waitUntil(
-                caches.open(dynamicCacheName).then((cache) => {
-                  return cache.put(event.request.url, clone);
-                })
-              );
+
+          return cacheRes || fetch(event.request).then(fetchRes => {
+            const url = event.request.url;
+            if(url.includes("/lastOnline") || url.includes("/verifyCache")) {
+              console.log(event.request.url)
               return fetchRes;
-            });
-        }
-      })
-      .catch((err) => {
-        return caches.match("/fallback");
-        // console.log(err)
-        // if (event.request.mode === 'navigate' && event.request.url.indexOf(".html") > -1) {
-        //   return caches.match("/fallback");
-        // }
-      })
+            }
+            console.log("fetch")
+            if(event.request.destination === "image") {
+              return caches.open(imageCache).then(cache => {
+                cache.put(event.request.url, fetchRes.clone());
+                return fetchRes;
+              })
+            }
+    
+            return caches.open(dynamicCacheName).then(cache => {
+              cache.put(event.request.url, fetchRes.clone());
+              return fetchRes;
+            })
+          });
+
+    }).catch(function() {
+      return caches.match('/offline.html');
+    })
   );
+
+
+
+
+
+  // event.respondWith(
+
+  //   caches.match(event.request).then(async function(response) {
+  //     caches.match(lastTimeOnline).then(lastCacheStatus => {
+  //       if(!lastCacheStatus) {
+  //         setLastOnline();
+
+  //         return response || fetch(event.request).then(fetchRes => {
+  //           if(event.request.destination === "image") {
+  //             return caches.open(imageCache).then(cache => {
+  //               cache.put(event.request.url, fetchRes.clone());
+  //               return fetchRes;
+  //             })
+  //           }
+    
+  //           return caches.open(dynamicCacheName).then(cache => {
+  //             cache.put(event.request.url, fetchRes.clone());
+  //             return fetchRes;
+  //           })
+  //         });
+
+
+  //       } else {
+  //         lastCacheStatus.json().then(body => {
+  //           const timestamp = body.timestamp;
+  //           const expired = isExpired(timestamp);
+  //           if(expired) {
+  //             //setLastOnline();
+
+  //             // delete all cache
+  //             // caches.keys().then((keys) => {
+  //             //   return Promise.all(
+  //             //     keys
+  //             //       .filter((key) => key !== staticCacheName && (key === dynamicCacheName || key === imageCache || key === lastTimeOnline))
+  //             //       .map((key) => {
+  //             //         console.log("Deleted ", key);
+  //             //         caches.delete(key);
+  //             //       }),
+  //             //   );
+  //             // })
+  //           }
+  //         })
+  //       }        
+  //     })
+  //     console.log("Fetched")
+  //     return response || fetch(event.request).then(fetchRes => {
+  //       if(event.request.destination === "image") {
+  //         return caches.open(imageCache).then(cache => {
+  //           cache.put(event.request.url, fetchRes.clone());
+  //           return fetchRes;
+  //         })
+  //       }
+
+  //       return caches.open(dynamicCacheName).then(cache => {
+  //         cache.put(event.request.url, fetchRes.clone());
+  //         return fetchRes;
+  //       })
+  //     });
+
+
+  //   }).catch(function() {
+  //     return caches.match('/offline.html');
+  //   })
+  // );
 });

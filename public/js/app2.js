@@ -6,7 +6,80 @@ if('serviceWorker' in navigator){
       .catch(err => console.log('service worker not registered', err));
 }
 
+var count = 0;
+
+async function clear_cache(loadNews) {
+  caches.keys().then(async function(names) {
+    for (let name of names) {
+      console.log("Deleted ", name)
+      if(name !== "NewsApp") {
+        caches.delete(name).then(found => {
+          count++;
+          console.log(count)
+          if(count === 3) {
+            setLastOnline();
+            loadNews();
+          }
+        })
+      }
+    }
+});
+}
+
+var isCacheExpired;
+
+function setLastOnline() {
+  console.log("setLastOnline")
+  fetch("/lastOnline").then(res => {
+    caches.open("last-time-online").then(cache => {
+      cache.put("last-time-online", res);
+    })
+  })
+}
+
+
+function verifyCache(loadNews, setLastOnline) {
+  caches.match("last-time-online").then(cacheRes => {
+    if(cacheRes) {
+      cacheRes.json().then(data => {
+        fetch("/verifyCache", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            timestamp: data.timestamp
+          })
+        }).then(res => {
+          return res.json()
+        }).then(async (res) => {
+          const { isExpired } = res;
+          console.log(isExpired)
+          if(isExpired) {
+            await clear_cache(loadNews, setLastOnline);
+            
+          } else {
+            console.log("hi")
+            loadNews();
+          }
+        })
+        .catch(err => {})
+      })
+    } else {
+      setLastOnline();
+      loadNews();
+    }
+    
+  })
+}
+
+window.onload = verifyCache(loadNews, setLastOnline);
+
+// window.onload = clear_cache();
+
 function loadNews() {
+
+  console.log("load news")
   const pathname = window.location.pathname
   const cat = pathname.slice(1, pathname.length)  
   fetch('/category?category=' + cat).then(res => {
@@ -51,7 +124,7 @@ function loadNews() {
   })
 }
 
-window.onload = loadNews();
+//window.onload = loadNews();
 
 document.getElementById("sidebar-headline").addEventListener("click", (e) => {
   loadHeadlines();

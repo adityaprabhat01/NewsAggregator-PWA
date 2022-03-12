@@ -2,7 +2,7 @@ const path = require('path')
 const express = require('express')
 const newsRoutes = require('./routes/newsRoutes')
 
-const port = process.env.PORT || 4000
+const port = process.env.PORT || 5000
 const app = express()
 
 // paths
@@ -15,6 +15,7 @@ app.set('views', viewsPath)
 
 // public
 app.use(express.static(publicDirectoryPath))
+app.use(express.json());
 
 // routes
 app.use('', newsRoutes)
