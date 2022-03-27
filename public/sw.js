@@ -12,6 +12,7 @@ console.log(str);
   Add urls to js, icons, css etc
 */
 const assets = [
+  "/sw.js",
   "/fallback",
   "/js/app.js",
   "/js/app2.js",
