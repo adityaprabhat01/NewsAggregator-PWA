@@ -42,28 +42,33 @@ function verifyCache(loadNews, setLastOnline) {
   caches.match("last-time-online").then(cacheRes => {
     if(cacheRes) {
       cacheRes.json().then(data => {
-        fetch("/verifyCache", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            timestamp: data.timestamp
+        if(!window.navigator.onLine) {
+          loadNews();
+        } else {
+          fetch("/verifyCache", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              timestamp: data.timestamp
+            })
+          }).then(res => {
+            return res.json()
+          }).then(async (res) => {
+            const { isExpired } = res;
+            console.log(isExpired)
+            if(isExpired) {
+              await clear_cache(loadNews, setLastOnline);
+              
+            } else {
+              console.log("hi")
+              loadNews();
+            }
           })
-        }).then(res => {
-          return res.json()
-        }).then(async (res) => {
-          const { isExpired } = res;
-          console.log(isExpired)
-          if(isExpired) {
-            await clear_cache(loadNews, setLastOnline);
-            
-          } else {
-            console.log("hi")
-            loadNews();
-          }
-        })
-        .catch(err => {})
+          .catch(err => {})
+        }
+        
       })
     } else {
       setLastOnline();
@@ -74,6 +79,7 @@ function verifyCache(loadNews, setLastOnline) {
 }
 
 window.onload = verifyCache(loadNews, setLastOnline);
+
 
 // window.onload = clear_cache();
 
