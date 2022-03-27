@@ -10,6 +10,75 @@ if ("serviceWorker" in navigator) {
   })
 }
 
+var count = 0;
+
+async function clear_cache(loadNews) {
+  caches.keys().then(async function(names) {
+    for (let name of names) {
+      console.log("Deleted ", name)
+      if(name !== "NewsApp") {
+        caches.delete(name).then(found => {
+          count++;
+          console.log(count)
+          if(count === 3) {
+            setLastOnline();
+            loadNews();
+          }
+        })
+      }
+    }
+});
+}
+
+var isCacheExpired;
+
+function setLastOnline() {
+  console.log("setLastOnline")
+  fetch("/lastOnline").then(res => {
+    caches.open("last-time-online").then(cache => {
+      cache.put("last-time-online", res);
+    })
+  })
+}
+
+
+function verifyCache(loadNews, setLastOnline) {
+  caches.match("last-time-online").then(cacheRes => {
+    if(cacheRes) {
+      cacheRes.json().then(data => {
+        fetch("/verifyCache", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            timestamp: data.timestamp
+          })
+        }).then(res => {
+          return res.json()
+        }).then(async (res) => {
+          const { isExpired } = res;
+          console.log(isExpired)
+          if(isExpired) {
+            await clear_cache(loadNews, setLastOnline);
+            
+          } else {
+            console.log("hi")
+            loadNews();
+          }
+        })
+        .catch(err => {})
+      })
+    } else {
+      setLastOnline();
+      loadNews();
+    }
+    
+  })
+}
+
+window.onload = verifyCache(loadNews, setLastOnline);
+
 let _i, _data;
 
 async function loadHeadlines() {
@@ -200,13 +269,23 @@ document
   .getElementById("show-more-headline")
   .addEventListener("click", showMore);
 
-window.onload = loadHeadlines();
-window.onload = loadCategories("business");
-window.onload = loadCategories("entertainment");
-window.onload = loadCategories("health");
-window.onload = loadCategories("science");
-window.onload = loadCategories("sports");
-window.onload = loadCategories("technology");
+// window.onload = loadHeadlines();
+// window.onload = loadCategories("business");
+// window.onload = loadCategories("entertainment");
+// window.onload = loadCategories("health");
+// window.onload = loadCategories("science");
+// window.onload = loadCategories("sports");
+// window.onload = loadCategories("technology");
+
+function loadNews() {
+  loadHeadlines();
+  loadCategories("business");
+  loadCategories("entertainment");
+  loadCategories("health");
+  loadCategories("science");
+  loadCategories("sports");
+  loadCategories("technology");
+}
 
 function openNav() {
   document.getElementById("sidebar").style.width = "400px";
